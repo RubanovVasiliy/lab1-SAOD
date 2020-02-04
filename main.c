@@ -1,9 +1,12 @@
+#include <inttypes.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <sys/time.h>
 
 #define MIN 0
 #define MAX 100000
+#define INT_SIZE 4
 
 double wtime() {
 	struct timeval t;
@@ -15,25 +18,25 @@ int getrand(int min, int max) {
 	return (double)rand() / (RAND_MAX + 1.0) * (max - min) + min;
 }
 
-void printArray(int arr[], int n) {
-	for (int i = 0; i < n; i++) {
+void printArray(uint32_t arr[], int sizeArr) {
+	for (int i = 0; i < sizeArr; i++) {
 		printf(" %d", arr[i]);
 	}
 	printf("\n\n");
 }
 
-void fillArray(int arr[], int n) {
-	for (int i = 0; i < n; i++) {
+void fillArray(uint32_t arr[], int sizeArr) {
+	for (int i = 0; i < sizeArr; i++) {
 		arr[i] = getrand(MIN, MAX);
 	}
 }
 
-void bubbleSort(int arr[], int n) {
+void bubbleSort(uint32_t arr[], int sizeArr) {
 	int swapped = 1;
 	while (swapped == 1) {
 		swapped = 0;
 		int temp;
-		for (int i = 0; i < n - 1; ++i) {
+		for (int i = 0; i < sizeArr - 1; ++i) {
 			if (arr[i] > arr[i + 1]) {
 				temp = arr[i];
 				arr[i] = arr[i + 1];
@@ -44,9 +47,9 @@ void bubbleSort(int arr[], int n) {
 	}
 }
 
-void countSort(int arr[], int n) {
+void countSort(uint32_t arr[], int sizeArr) {
 	int max = 0;
-	for (int i = 0; i < n; i++) {
+	for (int i = 0; i < sizeArr; i++) {
 		if (max < arr[i]) {
 			max = arr[i];
 		}
@@ -58,7 +61,7 @@ void countSort(int arr[], int n) {
 		count[i] = 0;
 	}
 
-	for (int i = 0; i < n; i++) {
+	for (int i = 0; i < sizeArr; i++) {
 		count[arr[i]]++;
 	}
 
@@ -78,12 +81,20 @@ int main(void) {
 	int size;
 	scanf("%d", &size);
 
-	int a[size];
-	fillArray(a, size);
+	uint32_t arrCount[size];
+	fillArray(arrCount, size);
 
-	printArray(a, size);
-	countSort(a, size);
-	printArray(a, size);
+	uint32_t arrBubble[size];
+	memcpy(arrBubble, arrCount, size * INT_SIZE);
+
+	printArray(arrCount, size);
+	printArray(arrBubble, size);
+
+	countSort(arrCount, size);
+	bubbleSort(arrBubble, size);
+
+	printArray(arrCount, size);
+	printArray(arrBubble, size);
 
 	return 0;
 }
