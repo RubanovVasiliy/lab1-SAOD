@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include <sys/time.h>
 
+#define MIN 0
+#define MAX 100000
+
 double wtime() {
 	struct timeval t;
 	gettimeofday(&t, NULL);
@@ -16,12 +19,12 @@ void printArray(int arr[], int n) {
 	for (int i = 0; i < n; i++) {
 		printf(" %d", arr[i]);
 	}
-	printf("\n");
+	printf("\n\n");
 }
 
 void fillArray(int arr[], int n) {
 	for (int i = 0; i < n; i++) {
-		arr[i] = rand() % 10;
+		arr[i] = getrand(MIN, MAX);
 	}
 }
 
@@ -55,7 +58,7 @@ void countSort(int arr[], int n) {
 		count[i] = 0;
 	}
 
-	for (int i = 0; i < max; i++) {
+	for (int i = 0; i < n; i++) {
 		count[arr[i]]++;
 	}
 
