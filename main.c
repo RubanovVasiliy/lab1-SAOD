@@ -78,8 +78,8 @@ void countSort(uint32_t arr[], int sizeArr) {
 }
 
 int main(void) {
-	int size;
-	scanf("%d", &size);
+	int size=10000;
+	//scanf("%d", &size);
 
 	uint32_t arrCount[size];
 	fillArray(arrCount, size);
@@ -87,14 +87,22 @@ int main(void) {
 	uint32_t arrBubble[size];
 	memcpy(arrBubble, arrCount, size * INT_SIZE);
 
-	printArray(arrCount, size);
-	printArray(arrBubble, size);
+	//printArray(arrCount, size);
+	//printArray(arrBubble, size);
 
+  double dTimeCount=wtime();
 	countSort(arrCount, size);
-	bubbleSort(arrBubble, size);
+  dTimeCount=wtime()-dTimeCount;
 
-	printArray(arrCount, size);
-	printArray(arrBubble, size);
+  double dTimeBubble=wtime();
+	bubbleSort(arrBubble, size);
+  dTimeBubble=wtime()-dTimeBubble;
+
+  printf("Time CountSort:  %f\n",dTimeCount);
+  printf("Time BubbleSort: %f\n",dTimeBubble);
+
+	//printArray(arrCount, size);
+	//printArray(arrBubble, size);
 
 	return 0;
 }
