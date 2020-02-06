@@ -77,32 +77,74 @@ void countSort(uint32_t arr[], int sizeArr) {
 	}
 }
 
+void swap(uint32_t *a, uint32_t *b) {
+	uint32_t temp = *a;
+	*a = *b;
+	*b = temp;
+}
+
+void heapify(uint32_t arr[], int n, int i) {
+	int l = 2 * i;
+	int r = 2 * i + 1;
+	int max = i;
+
+	if (l < n && arr[l] > arr[max]) {
+		max = l;
+	} else {
+		max = i;
+	}
+
+	if (r < n && arr[r] > arr[max]) {
+		max = r;
+	}
+
+	if (max != i) {
+		swap(&arr[i], &arr[max]);
+		heapify(arr, n, max);
+	}
+}
+
+void heapSort(uint32_t arr[], int n) {
+	for (int i = n / 2 - 1; i >= 0; i--) {
+		heapify(arr, n, i);
+  }
+
+	for (int i = n - 1; i >= 0; i--) {
+		swap(&arr[0], &arr[i]);
+		heapify(arr, i, 0);
+	}
+}
+
 int main(void) {
-	int size=10000;
-	//scanf("%d", &size);
 
-	uint32_t arrCount[size];
-	fillArray(arrCount, size);
+	for (long long int size = 50000; size <= 1000001; size += 50000) {
+		uint32_t arrCount[size];
+		fillArray(arrCount, size);
 
-	uint32_t arrBubble[size];
-	memcpy(arrBubble, arrCount, size * INT_SIZE);
+		uint32_t arrBubble[size];
+		memcpy(arrBubble, arrCount, size * INT_SIZE);
 
-	//printArray(arrCount, size);
-	//printArray(arrBubble, size);
+    uint32_t arrHeap[size];
+		memcpy(arrHeap, arrCount, size * INT_SIZE);
 
-  double dTimeCount=wtime();
-	countSort(arrCount, size);
-  dTimeCount=wtime()-dTimeCount;
+		double dTimeCount = wtime();
+		countSort(arrCount, size);
+		dTimeCount = wtime() - dTimeCount;
 
-  double dTimeBubble=wtime();
-	bubbleSort(arrBubble, size);
-  dTimeBubble=wtime()-dTimeBubble;
+		double dTimeBubble = wtime();
+		//bubbleSort(arrBubble, size);
+		dTimeBubble = wtime() - dTimeBubble;
 
-  printf("Time CountSort:  %f\n",dTimeCount);
-  printf("Time BubbleSort: %f\n",dTimeBubble);
+    double dTimeHeap = wtime();
+		heapSort(arrHeap, size);
+		dTimeHeap = wtime() - dTimeHeap;
 
-	//printArray(arrCount, size);
-	//printArray(arrBubble, size);
+    printf("Size: %d\n",size);
+		printf("Time CountSort:  %f\n", dTimeCount);
+		printf("Time BubbleSort: %f\n", dTimeBubble);
+    printf("Time HeapSort:   %f\n", dTimeHeap);
+    printf("\n");
+	}
 
 	return 0;
 }
