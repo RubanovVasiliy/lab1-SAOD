@@ -125,15 +125,15 @@ void heapSort(uint32_t arr[], int n) {
 
 int main(void) {
 
-	for (long long int size = 50000; size <= 1000000; size += 50000) {
+	for (long long int size = 50000; size <= 3000000; size += 50000) {
     uint32_t * arrCount = malloc(size * sizeof(int));
 		fillArray(arrCount, size);
 
 		uint32_t * arrBubble = malloc(size * sizeof(int));
-		arrayCopy(arrBubble, arrCount, size);
+    memcpy(arrBubble, arrCount, size * INT_SIZE);
 
     uint32_t * arrHeap = malloc(size * sizeof(int));
-	  arrayCopy(arrHeap, arrCount, size);
+    memcpy(arrHeap, arrCount, size * INT_SIZE);
 
 		double dTimeCount = wtime();
 		countSort(arrCount, size);
