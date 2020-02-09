@@ -18,6 +18,12 @@ int getrand(int min, int max) {
 	return (double)rand() / (RAND_MAX + 1.0) * (max - min) + min;
 }
 
+void arrayCopy(uint32_t arrOut[], uint32_t arrIn[], int sizeArr){
+  for (int i = 0; i < sizeArr; i++) {
+		arrOut[i] = arrIn[i];
+	}
+}
+
 void printArray(uint32_t arr[], int sizeArr) {
 	for (int i = 0; i < sizeArr; i++) {
 		printf(" %d", arr[i]);
@@ -55,7 +61,8 @@ void countSort(uint32_t arr[], int sizeArr) {
 		}
 	}
 	max++;
-	int count[max];
+	
+  uint32_t * count = malloc(max * sizeof(int));
 
 	for (int i = 0; i < max; i++) {
 		count[i] = 0;
@@ -75,6 +82,7 @@ void countSort(uint32_t arr[], int sizeArr) {
 			currentSorteddIndex++;
 		}
 	}
+  free(count);
 }
 
 void swap(uint32_t *a, uint32_t *b) {
@@ -117,26 +125,26 @@ void heapSort(uint32_t arr[], int n) {
 
 int main(void) {
 
-	for (long long int size = 50000; size <= 1000001; size += 50000) {
-		uint32_t arrCount[size];
+	for (long long int size = 50000; size <= 1000000; size += 50000) {
+    uint32_t * arrCount = malloc(size * sizeof(int));
 		fillArray(arrCount, size);
 
-		uint32_t arrBubble[size];
-		memcpy(arrBubble, arrCount, size * INT_SIZE);
+		uint32_t * arrBubble = malloc(size * sizeof(int));
+		arrayCopy(arrBubble, arrCount, size);
 
-    uint32_t arrHeap[size];
-		memcpy(arrHeap, arrCount, size * INT_SIZE);
+    uint32_t * arrHeap = malloc(size * sizeof(int));
+	  arrayCopy(arrHeap, arrCount, size);
 
 		double dTimeCount = wtime();
 		countSort(arrCount, size);
 		dTimeCount = wtime() - dTimeCount;
 
 		double dTimeBubble = wtime();
-		//bubbleSort(arrBubble, size);
+	  //bubbleSort(arrBubble, size);
 		dTimeBubble = wtime() - dTimeBubble;
 
     double dTimeHeap = wtime();
-		heapSort(arrHeap, size);
+	  heapSort(arrHeap, size);
 		dTimeHeap = wtime() - dTimeHeap;
 
     printf("Size: %d\n",size);
@@ -144,6 +152,10 @@ int main(void) {
 		printf("Time BubbleSort: %f\n", dTimeBubble);
     printf("Time HeapSort:   %f\n", dTimeHeap);
     printf("\n");
+   
+   free(arrCount);
+   free(arrBubble);
+   free(arrHeap);
 	}
 
 	return 0;
